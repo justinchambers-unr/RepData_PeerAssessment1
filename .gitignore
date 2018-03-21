@@ -1,0 +1,5 @@
+# Ignore knitr-generated stuff...
+
+PA1_template.html
+PA1_template.md
+PA1_template_files/*
