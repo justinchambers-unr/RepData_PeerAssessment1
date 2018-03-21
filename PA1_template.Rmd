@@ -7,12 +7,31 @@ output:
 
 
 ## Loading and preprocessing the data
-
+```{r loaddata, message=FALSE, echo=TRUE}
+data <- read.csv("activity.csv", 
+                 header = TRUE, 
+                 stringsAsFactors = FALSE)
+```
 
 
 ## What is mean total number of steps taken per day?
+```{r meantotalstep, message=FALSE, echo=TRUE, fig.height=4}
+library(dplyr)
+view <- data %>% 
+        group_by(date) %>% 
+        summarize(total.steps = sum(steps, na.rm = TRUE))
+with(view, {
+        hist(total.steps, 
+             col = "blue1", 
+             xlab = "Total Steps in a Day", 
+             main = "Histogram of Total Steps per Day")
+        })
+steps.median <- median(view$total.steps)
+steps.mean <- mean(view$total.steps)
+```
 
-
+The median total step count is `r steps.median` and the mean total step count is
+`r steps.mean`.
 
 ## What is the average daily activity pattern?
 
