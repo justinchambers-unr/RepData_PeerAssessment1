@@ -34,11 +34,45 @@ The median total step count is `r steps.median` and the mean total step count is
 `r steps.mean`.
 
 ## What is the average daily activity pattern?
-
-
+```{r avgstepsperinterval, message=FALSE, echo=TRUE}
+view <- data %>% 
+        group_by(interval) %>% 
+        summarize(average.steps.in.interval = mean(steps, na.rm = TRUE))
+with(view, {
+        plot(interval, average.steps.in.interval, 
+             type = "l",
+             col = "blue1", 
+             xlab = "5 Minute Intervals", 
+             ylab = "Average Steps",
+             main = "Average Daily Activity Pattern")
+        })
+```
 
 ## Imputing missing values
+```{r imputedrecalc, message=FALSE, echo=TRUE}
+impute <- function(df) { 
+        tmp <- df
+        for(i in 1:length(tmp$steps)) {
+                if(is.na(tmp$steps[i])) {
+                        tmp$steps[i] <- view$average.steps.in.interval[view$interval == tmp$interval[i]]
+                }
+        }
+        tmp
+}
+view2 <- impute(data) %>%
+        group_by(date) %>% 
+        summarize(total.steps = sum(steps))
+with(view2, {
+        hist(total.steps, 
+             col = "blue1", 
+             xlab = "Total Steps in a Day", 
+             main = "Histogram of Total Steps per Day")
+        })
+steps2.median <- median(view2$total.steps)
+steps2.mean <- mean(view2$total.steps)
+```
 
-
+The median total step count is `r steps2.median` and the mean total step count is
+`r steps2.mean`.
 
 ## Are there differences in activity patterns between weekdays and weekends?
