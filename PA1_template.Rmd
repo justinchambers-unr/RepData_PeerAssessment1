@@ -26,8 +26,8 @@ with(view, {
              xlab = "Total Steps in a Day", 
              main = "Histogram of Total Steps per Day")
         })
-steps.median <- median(view$total.steps)
-steps.mean <- mean(view$total.steps)
+steps.median <- format(median(view$total.steps), big.mark = ",", digits = 0)
+steps.mean <- format(mean(view$total.steps), big.mark = ",", digits = 0)
 ```
 
 The median total step count is `r steps.median` and the mean total step count is
@@ -59,20 +59,58 @@ impute <- function(df) {
         }
         tmp
 }
-view2 <- impute(data) %>%
+
+imputed <- impute(data)
+
+view2 <- imputed %>%
         group_by(date) %>% 
         summarize(total.steps = sum(steps))
+
 with(view2, {
         hist(total.steps, 
              col = "blue1", 
              xlab = "Total Steps in a Day", 
              main = "Histogram of Total Steps per Day")
         })
-steps2.median <- median(view2$total.steps)
-steps2.mean <- mean(view2$total.steps)
+
+steps2.median <- format(median(view2$total.steps), big.mark = ",", digits = 5)
+steps2.mean <- format(mean(view2$total.steps), big.mark = ",", digits = 5)
 ```
 
 The median total step count is `r steps2.median` and the mean total step count is
 `r steps2.mean`.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r weekdayvsweekends, message=FALSE, echo=TRUE }
+library(lattice)
+
+assignDayLevels <- function(date_vec) {
+        weekend <- c("Saturday", "Sunday")
+        assign_vec <- NULL
+        for(i in 1:length(date_vec)) {
+                tmp <- as.Date(date_vec[i])
+                if(weekdays(tmp) %in% weekend) {
+                        assign_vec[i] <- TRUE
+                } else {
+                        assign_vec[i] <- FALSE                
+                }
+        }
+        assign_vec
+}
+
+view3 <- imputed %>%
+        mutate(day.level := as.factor(assignDayLevels(date))) %>%
+        group_by(day.level, interval) %>%
+        arrange(desc(day.level), interval) %>%
+        summarize(average.steps = mean(steps))
+levels(view3$day.level) <- c("weekday", "weekend")
+
+xyplot(average.steps ~ interval | day.level,
+       data = view3,
+       type = "l",
+       layout = c(1,2),
+       xlab = "Interval", 
+       ylab = "Number of Steps",
+       main = "Average Daily Activity Patterns (Weekends vs. Weekdays)")
+```
