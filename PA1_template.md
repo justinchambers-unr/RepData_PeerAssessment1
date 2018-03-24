@@ -24,6 +24,7 @@ view <- data %>%
         summarize(total.steps = sum(steps, na.rm = TRUE))
 with(view, {
         hist(total.steps, 
+             breaks = 20,
              col = "blue1", 
              xlab = "Total Steps in a Day", 
              main = "Histogram of Total Steps per Day")
@@ -92,6 +93,7 @@ view2 <- imputed %>%
 
 with(view2, {
         hist(total.steps, 
+             breaks = 20,
              col = "blue1", 
              xlab = "Total Steps in a Day", 
              main = "Histogram of Total Steps per Day")
