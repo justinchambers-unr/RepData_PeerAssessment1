@@ -58,6 +58,12 @@ with(view, {
 
 ![](PA1_template_files/figure-html/avgstepsperinterval-1.png)<!-- -->
 
+```r
+maxinterval <- view$interval[view$average.steps.in.interval == max(view$average.steps.in.interval)]
+```
+
+The interval containing the maximum average number of steps is 835.
+
 ## Imputing missing values
 
 ```r
