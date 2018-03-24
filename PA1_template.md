@@ -66,6 +66,13 @@ The interval containing the maximum average number of steps is 835.
 
 ## Imputing missing values
 
+#### Strategy
+
+For each missing value, the value is replaced with the mean value for that interval.
+
+#### Code
+
+
 ```r
 impute <- function(df) { 
         tmp <- df

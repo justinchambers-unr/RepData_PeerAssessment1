@@ -164,6 +164,12 @@ with(view, {
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
+<div id="strategy" class="section level4">
+<h4>Strategy</h4>
+<p>For each missing value, the value is replaced with the mean value for that interval.</p>
+</div>
+<div id="code" class="section level4">
+<h4>Code</h4>
 <pre class="r"><code>impute &lt;- function(df) { 
         tmp &lt;- df
         for(i in 1:length(tmp$steps)) {
@@ -190,6 +196,7 @@ with(view2, {
 <pre class="r"><code>steps2.median &lt;- format(median(view2$total.steps), big.mark = &quot;,&quot;, digits = 5)
 steps2.mean &lt;- format(mean(view2$total.steps), big.mark = &quot;,&quot;, digits = 5)</code></pre>
 <p>The median total step count is 10,766 and the mean total step count is 10,766.</p>
+</div>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
